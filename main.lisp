@@ -15,9 +15,18 @@
   (dictionary-elements d)
 )
 
+;;Returns a collection with all keys stored in the dictionary, including possible duplicates.
+(defmethod keys((d dictionary))
+ (append (getAllkeys(dictionary-elements d))))
+
+
+;;Returns a collection with all keys stored in the dictionary, including possible duplicates.
+(defmethod elements((d dictionary))
+ (append(getAllElements(dictionary-elements d))))
+
 ;;Inserts an item with element e and key k into the dictionary
-(defmethod insert( el (d dictionary))
-  ( setf (dictionary-elements d) (cons el (dictionary-elements d)))
+(defmethod insertItem(key element (d dictionary))
+  (setf (dictionary-elements d) (cons (list key element) (dictionary-elements d)))
   (setf (dictionary-size d) (+ 1 (dictionary-size d)))
 )
 
@@ -50,7 +59,39 @@
 
 ;;Removes every item with key equal to k and returns True, or if no items exist then it returns False
 (defmethod removeAllItems(key (d dictionary))
- (setf (dictionary-elements d)(removeAllBykey (d dictionary))))
+ (setf (dictionary-elements d)(removeAllBykey (d dictionary)))
+)
+
+
+;;Sub Class of Dictonary
+(defclass restricted-dictionary(dictionary)
+  ((capacity :accessor restricted-dictionary-capacity             
+             :initform 10
+             :allocation :class)
+   )
+)
+
+;;Inserts an item with element e and key k into the dictionary
+(defmethod insertItem :around(key element (rd restricted-dictionary))
+  (cond ((equal (stringp key) nil) "error: key is not string")
+        ((equal (stringp element) nil) "error: element is not string")
+        ((equal key element) "error: key and element are same")
+        ((memberp key (keys rd)) "error: key already exist")
+        ((> (dictionary-size rd) (restricted-dictionary-capacity rd)) "error: you don't have capacity")
+        (T (call-next-method))
+    )  
+ )
+
+
+
+;;implementation of memberp
+(defun  memberp(key lst)
+  (cond ((null lst) nil)
+    ((equal key (car lst)) T)
+    (T (memberp key ( cdr lst)))
+    )
+ )
+
 
 (defun removeOneItemBykey(key lst)
  (cond ((null lst) nil)
@@ -77,11 +118,28 @@
        (T (searchAllByKey key (cdr lst))))
 )
 
+(defun getAllkeys(lst)
+ (if (or (null lst)(not(listp lst))) 
+      nil
+      (append (cons (car(car lst)) (getAllkeys (cdr lst)))))
+) 
+
+(defun getAllElements(lst)
+ (if (or (null lst)(not(listp lst))) 
+      nil
+     (append (cdr(car lst)) (getAllElements (cdr lst))))
+ )
+
 ;;================================== Testing Code==============================
-(setq c ( make-instance 'dictionary))
-(insert '(1 a) c)
-(insert '(2 b) c)
-(print(display c))
-(print (isEmpty c))
-(print (size c))
-(print (ﬁndItem '1 c))
+
+;;Checking task 2
+(setq rd ( make-instance 'restricted-dictionary))
+(print (insertItem "b" "rain"  rd))
+(print (display rd))
+;(print (insertItem 'rain "roman" rd)
+;(print (insertItem 'rasel "bhai" rd)))
+;(print (insertItem 'rain "rain" rd))
+
+
+
+
