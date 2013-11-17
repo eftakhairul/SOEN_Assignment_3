@@ -4,3 +4,9 @@
 *.jar
 *.war
 *.ear
+
+#IDE related Setting#y
+
+.project
+.idea
+nbproject
