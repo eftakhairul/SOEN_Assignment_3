@@ -1,6 +1,6 @@
-;;;; 2013-11-16 02:16:11
-;;;; This is your lisp file. May it serve you well.
-;;;; author Eftakhairul Islam <eftakhairul@gmail.com>
+;; 2013-11-16 02:16:11
+;; This is your lisp file. May it serve you well.
+;; author Eftakhairul Islam <eftakhairul@gmail.com>
 
 ;;class
 (defclass dictionary()
@@ -54,12 +54,12 @@
 
 ;;Removes an item with key equal to k and returns True, or if an item does not exist then it returns False
 (defmethod removeItem(key (d dictionary))
- (setf (dictionary-elements d)(removeOneItemBykey key (dictionary d))))
+ (setf (dictionary-elements d)(removeOneItemBykey key (dictionary-elements d))))
 
 
 ;;Removes every item with key equal to k and returns True, or if no items exist then it returns False
 (defmethod removeAllItems(key (d dictionary))
- (setf (dictionary-elements d)(removeAllBykey (d dictionary)))
+ (setf (dictionary-elements d)(removeAllBykey (dictionary-elements d)))
 )
 
 
@@ -82,8 +82,6 @@
     )  
  )
 
-
-
 ;;implementation of memberp
 (defun  memberp(key lst)
   (cond ((null lst) nil)
@@ -95,8 +93,8 @@
 
 (defun removeOneItemBykey(key lst)
  (cond ((null lst) nil)
-  ((equal key(car(car lst)))(cdr lst)) 
-   (t (cons (car lst) (removeOneItemBykey key (cdr lst)))))
+       ((equal key(car(car lst)))(cdr lst)) 
+       (T (cons (car lst) (removeOneItemBykey key (cdr lst)))))
  )
 
 (defun removeAllBykey(key lst)
@@ -104,7 +102,6 @@
        ((equal key(car(car lst))) (removeAllBykey (cdr lst)))
        (t (cons (car lst) (removeAllBykey key (cdr lst)))))
 )
-
 
 (defun searchByKey(key lst)
  (cond ((null lst)   nil)
@@ -134,12 +131,25 @@
 
 ;;Checking task 2
 (setq rd ( make-instance 'restricted-dictionary))
+(write-line "One Insertion")
 (print (insertItem "b" "rain"  rd))
+(write-line "Display")
 (print (display rd))
-;(print (insertItem 'rain "roman" rd)
-;(print (insertItem 'rasel "bhai" rd)))
-;(print (insertItem 'rain "rain" rd))
-
-
+(print (insertItem "b" "roman" rd))
+(print (insertItem "a" "a" rd))
+(write-line "2nd Insertion")
+(print (insertItem "c" "ap" rd))
+(write-line "Display")
+(print (display rd))
+(write-line "Size")
+(print (size rd))
+(write-line "isEmpty Check")
+(print (isEmpty rd))
+(write-line "Search by key C")
+(print (ﬁndItem "c"  rd))
+(write-line "Remove one element by key C")
+(print (removeOneItemBykey "c"  rd))
+(write-line "Size")
+(print (size rd))
 
 
