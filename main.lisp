@@ -95,7 +95,7 @@
         ((equal (stringp element) nil)  "error: element is not string")
         ((equal key element)            "error: key and element are same")
         ((memberp key (keys rd))        "error: key is already exist")
-        ((> (dictionary-size rd) (restricted-dictionary-capacity rd)) "error: you don't have capacity")
+        ((= (dictionary-size rd) (restricted-dictionary-capacity rd)) "error: you don't have capacity")
         (T (call-next-method key element rd))
     )  
  )
